@@ -1,0 +1,9 @@
+<HTML>
+<HEAD>
+<TITLE>Sprites</TITLE>
+<STYLE type='text/css'> image { margin: 25px; display: block; }; body {background-color:#aeaeae; } </STYLE>
+</HEAD>
+<BODY>
+  
+ <img src='LlamaBlue.png'>
+ <img src='LlamaBlue.png'>

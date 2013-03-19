@@ -1,0 +1,2 @@
+(do
+   (printString "<form action='/test1' method='POST'> <input name='key1' /> <input type='submit'></form>"))

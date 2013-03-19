@@ -1,0 +1,77 @@
+;foo
+;comment
+;(defun printBoth (a b) (do (printString a) (printString b)))
+;(printBoth (bare abcd) "Second")
+(printString (bare
+	      <H1>A title </H1>
+	      Are newlines included? Yep!
+))
+
+(printString "Meow?\n\n\n")
+(load "lib.spb")
+(make-hashtable hashname)
+(hashtable-set hashname 2 4.0)	
+(hashtable-set hashname 4 16)
+(hashtable-set hashname "Foo" "Bar")
+(hashtable-set hashname "ListVal" '("Bar" "Baz" "Bam" 42))
+(defun xyz (a b)	
+  (if (> a b) "a > b"
+    NIL "This'll never happen."
+    "b > a"))
+
+(if (== '(1 2 3) '(1 2 3)) (printString "<br/>1 2 3 == 1 2 3</br>")
+  (printString "<br/>1 2 3 /= 1 2 3</br>"))
+
+(if (not (== '(1 5 3) '(1 2 3))) (printString "<br/>1 5 3 /= 1 2 3</br>")
+  (printString "<br/>1 5 3 == 1 2 3</br>"))
+
+(defun aby (z) z)
+(printString "Hello, world!")
+(printString (show hashname))
+(printString (xyz 300 500))
+(print (libFun 900))
+(printString (get-post "key1"))
+(printString (json hashname))
+
+(let a 4
+     b (+ 1 a)
+     (do 
+	 (printString "<br/>Let test: ") 
+	 (if (> b a) (printString " b > a; ")
+	   (printString " a >= b; "))
+       (print b)
+       (printString "<br/>")))
+
+(printString "<hr/>")
+
+(printString "MyCookie: ")
+(print (eval (read (get-cookie "MyCookie3"))))
+
+(set-cookie "MyCookie3" 56)
+
+(printString "<hr/>")
+(printString "Memory Counter: ")
+(let val (get-memory "memoryCounter")
+     (do 
+	 (print val)
+	 (set-memory "memoryCounter" (+ 1 (if val val 0)))))
+
+(printString "<hr/>")
+(printString "Session Counter: ")
+(let val (get-session "sessionCounter")
+     (do 
+	 (print val)
+	 (set-session "sessionCounter" (cons (random 100) val))))
+
+(printString "<hr/>")
+(printString (append "Random Test: " (show (random 100))))
+
+(printString "<hr/>")
+
+(printString "<br/>")
+(printString (append "Safe Eval Test: " (show (evalSafe 
+		       '(do 
+			   (printString "Llama") 
+			   (random 500))))))
+(printString "<br/>")
+(printString (append "Safe Eval Error Test: " (show (evalSafe '(xyz 200 500)))))

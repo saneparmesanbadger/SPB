@@ -1,0 +1,85 @@
+(printString (bare
+<HEAD>
+    <link rel="stylesheet" href="./codemirror/lib/codemirror.css">
+    <script src="./codemirror/lib/codemirror.js"></script>
+    <script src="./codemirror/spb.js"></script>
+    <script src="./SPBLib.js"></script>
+<style type='text/css'>
+h1 { padding-top: 20px; padding-right: 70px; margin-top: 0px; display: inline-block; clear: both; background-image:url('images/Badger.png'\);background-position:top right; background-repeat:no-repeat; }
+.wrap { overflow: hidden; }
+</style>
+ </div>
+    <script>))
+(printString "
+    window.runJS = function(){
+        console.log(eval(document.getElementById('output').innerHTML));
+        console.log('runJS');
+    }
+")
+(printString (bare
+    </script>
+</HEAD>
+<div class='wrap'>
+<h1><span>))
+(defun dequote (a) (car (cdr a)))
+(defun randomElement (i max words)
+  (do 
+    (if (== NIL (cdr words)) (dequote (car words))
+      (if (== max i) (dequote (car words))  (randomElement (+ 1 i) max (cdr words))))))
+(let swords '("Sane" "Sensitive" "Sampling" "Sadly" "Saboteur" "Sugary" 
+	      "Sparkly " "Shredded" "Sharply" "Scattered" "Sabrecat" "Super"
+	      "Spitting " "Somewhat" "Spider" "Soft" "Seething" "Saintly" 
+	      "Suspiciously" "Surprisingly" "Secretly" "Sadistic" "Skittish")
+     pwords '("Parmesan" "Pockmarked" "Post-Apocalyptic" "Primitive" "Pre-historic"
+	      "Particle" "Promising" "Parmesan" "Provacative" "Premium" "Producing"
+	      "Prepared" "Peaceful" "Promisciuous" "Proficient" "Plush" "Pleasing"
+	      "Purple" "Peculiar" "Precocious" "Planning" "Pantomiming" "Praiseworthy")
+     bwords '("Badger" "Badgers")
+    (do
+      (printString (randomElement 0 (random 23) swords))
+     (printString (randomElement 0 (random 22) pwords))
+   (printString (randomElement 0 (random 1) bwords))
+   (printString (bare </span></h1><br/>
+   <div style='float: left'>
+   <form action=./demo method=POST>
+   <textarea style='min-width:400px; height: 400px;' id=code name=code>))
+   (printString 
+   (let code (get-post "code")
+     demoCode (append 
+          (append ";SPB Tip: " (append (append (randomElement 0 (random 23) swords) " Badgers are Rarely ") (randomElement 0 (random 22) pwords)))
+		      "\n(printString \"Hello, World!\")")
+     (printString (append (if (== NIL code) demoCode code) "</textarea>"))))))
+(printString (bare
+<br/>
+<input type=submit value="Run"/>
+</form>
+</div>
+
+<script>
+var editor = CodeMirror.fromTextArea(document.getElementById("code"\), {lineNumbers: true}\);
+</script>
+))
+
+(let 
+    r (readMay (append "(do NIL " (append (get-post "code") ")")))
+    evd (evalSafe (car r))
+    result (car evd)
+    errors (car (cdr evd))
+    output (car (cdr (cdr evd)))
+    (do 
+	(printString "<div style='float: left;'>")
+	(printString "<textarea id=output style=\"width: 400px; height: 400px;\">")
+      (printString (if (not (== NIL (car (cdr r)))) (car (cdr r)) 
+		     (append (if (not (== NIL errors)) (car errors) "") output)))
+      (printString "</textarea><br/><input type='submit' value='Run as JS' onClick='javascript:window.runJS();' /></div><hr style='clear: both;'/>")
+      
+      (printString "<h2>Result</h2>")
+      (print result)
+      (printString "<h2> Code log </h2>")
+      
+      (let loggedCode (append (append (get-post "code") "<hr />") (get-session "logged-code"))
+	   (do
+	    (printString loggedCode)
+	    (set-session "logged-code" loggedCode)))))
+
+(printString "</div>")

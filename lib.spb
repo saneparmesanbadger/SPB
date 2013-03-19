@@ -1,0 +1,2 @@
+(do
+  (defun libFun (x) 42))

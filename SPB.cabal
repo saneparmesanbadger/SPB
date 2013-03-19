@@ -1,0 +1,39 @@
+name:           Sane-Parmesan-Badger
+version:        0.1
+synopsis:       Synergize the Cloud Scale DSL
+homepage:       http://epicprofessors.com
+author:         Team Brilliant Squid
+license:        GPL
+build-type:     Simple
+Cabal-Version:       >=1.2
+
+executable SPB
+  main-is:        SPB.hs
+  hs-source-dirs: .         
+
+library
+  build-depends:  base
+                  , time
+                  , current-locale
+                  , bytestring
+                  , text
+                  , containers
+                  , network
+                  , stm
+                  , mtl
+                  , transformers
+                  , unordered-containers
+                  , Safe
+                  , errors
+                  , parsec
+                  , hashable
+                  , url
+                  , random
+                  , directory
+  ghc-options: -O2 -no-recomp
+  exposed-modules: SPB.Base
+                   SPB.Parse
+                   SPB.Interpreter
+                   SPB.Server.Server
+                   
+                   
